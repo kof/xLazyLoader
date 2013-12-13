@@ -148,12 +148,14 @@ function xLazyLoader ()
 
         var link = $('<link rel="stylesheet" type="text/css" media="all" href="'+ href + key + '" id="'+name+'"></link>')[0];
         if ( $.browser.msie ) {
-            link.onreadystatechange = function (){
-                if (link.readyState == "loaded" || link.readyState == "complete") {
-					link.onreadystatechange = null;
-					callback();
-				}
-			}
+            if($.browser.version < 11) {
+                link.onreadystatechange = function (){
+                    if (link.readyState == "loaded" || link.readyState == "complete") {
+    					link.onreadystatechange = null;
+    					callback();
+    				}
+    			}
+            } else { link.onload = callback; }
         } else if ( $.browser.opera ) {
             link.onload = callback;
         } else {
